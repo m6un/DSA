@@ -24,22 +24,17 @@ Constraints:
 nums is sorted in non-decreasing order.
 """
 
-class Solution:
-    def removeDuplicates_try_1(self, nums: List[int]) -> int:
-        """
-        I'm trying to think on how to do it first time, what's the first approach that's coming to my mind for solving this. Hmmmm.... WE need to walk, we need a pointer to walk from the first item. And then what? what will it compare the value with ? Hmm this is an array that's sorted in non-decreasing order. and we have to remove the duplicates in place. Hmm interesting. I've got an idea. But that's not really doing it in-place hmm. 
-        """
-        staging_array = [nums[0]]
-        for i in range(1,len(nums)):
-            if nums[i] != nums[i-1]:
-                staging_array.append(nums[i])
-        return len(staging_array)
-    
+class Solution:   
     def removeDuplicates_trial_2_success(self, nums: List[int]) -> int:
         """
-        I'm trying to think on how to do it first time, what's the first approach that's coming to my mind for solving this. Hmmmm.... WE need to walk, we need a pointer to walk from the first item. And then what? what will it compare the value with ? Hmm this is an array that's sorted in non-decreasing order. and we have to remove the duplicates in place. Hmm interesting. I've got an idea. But that's not really doing it in-place hmm. 
-
-        Yeah that's wrong. See the requirement is to remove teh duplicates from nums and return the number of unique elements. first k elements in nums should contain unique numbers in sorted order. The remaining elements beyond k-1 can be ignored. 
+        Intuition: We've used two-pointer approach here to solve the problem.The idea is we have I, which starts at 0, and J, which starts at the next to I. It's more or less like the runner method or the runner        approach to group by. I would be keeping track of the sorted unique elements one by one by their position. J would be looking to skip the duplicates, find the next unique element, and then you skip I to the next next index. You just replace whatever value that is there with the next unique, and that's how you go forward. In the end, you just return I plus one, which would be the count of the array or the count of unique elements in the array.
+        
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        Reasoning: 
+        Time Complexity O(n): j starts at 1 and increments every iteration until len(nums) — touches every element exactly once. i only moves when a new unique is found but doesn't add iterations. Single pass = O(n). 
+        
+        Space Complexity O(1):No extra data structures; i and j are just integer indices (constant space) and in-place writes reuse the existing array.
         """
         # staging_array = [nums[0]]
         # for i in range(1,len(nums)):
@@ -56,9 +51,5 @@ class Solution:
                 i = i+1
                 nums[i] = nums[j]
             j+=1   
-        return i+1 
-    
-    """
-        We've used two-pointer approach here to solve the problem.The idea is we have I, which starts at 0, and J, which starts at the next to I. It's more or less like the runner method or the runner        approach to group by. I would be keeping track of the sorted unique elements one by one by their position. J would be looking to skip the duplicates, find the next unique element, and then you skip I to the next next index. You just replace whatever value that is there with the next unique, and that's how you go forward. In the end, you just return I plus one, which would be the count of the array or the count of unique elements in the array.
-    """
+        return i+1
     
