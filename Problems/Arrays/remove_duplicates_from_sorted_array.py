@@ -27,7 +27,7 @@ nums is sorted in non-decreasing order.
 class Solution:   
     def removeDuplicates_trial_2_success(self, nums: List[int]) -> int:
         """
-        Intuition: We've used two-pointer approach here to solve the problem.The idea is we have I, which starts at 0, and J, which starts at the next to I. It's more or less like the runner method or the runner        approach to group by. I would be keeping track of the sorted unique elements one by one by their position. J would be looking to skip the duplicates, find the next unique element, and then you skip I to the next next index. You just replace whatever value that is there with the next unique, and that's how you go forward. In the end, you just return I plus one, which would be the count of the array or the count of unique elements in the array.
+        Intuition: We've used two-pointer approach here to solve the problem.The idea is we have I, which starts at 0, and J, which starts at the next to I. It's more or less like the runner method or the runner approach to group by. I would be keeping track of the sorted unique elements one by one by their position. J would be looking to skip the duplicates, find the next unique element, and then you skip I to the next next index. You just replace whatever value that is there with the next unique, and that's how you go forward. In the end, you just return I plus one, which would be the count of the array or the count of unique elements in the array.
         
         Time Complexity: O(n)
         Space Complexity: O(1)
