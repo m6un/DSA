@@ -28,3 +28,37 @@ class Solution:
                     i +=1
         
         return nums
+    
+    def optimal_solution(self, nums: List[int]) -> None:
+        """
+        Intuition: So this is an algorithm known as Dutch national flag algorithm. Instead of looping multiple times, we use "3 pointers" to partition the array in a single pass. 
+        1. low: the boundary where the next 0 should go 
+        2. mid: the current element we're inspecting
+        3. high: the boundary where the next 2 should go 
+        
+        Some things that I noticed: 
+        1.Low and high are like two walls that are moving in from the two sides and the mid pointer is what explores what’s in between
+        2.Why we do not increment mid when a high value gets swapped into the mid’s position is because we don’t know what value that is. If it’s a zero then it needs to go into the front. Now, why doing the exact same thing in the low block instead of high doesn’t work is because our mid pointer itself starts from low. So it knows what’s there in the low block, but it’s the high block that’s unknown to it. 
+
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        Reasoning : one pass and no extra data structures used
+        """
+
+        #Dutch National Flag Algorithm
+        arr_len = len(nums)
+        low = 0
+        mid = 0
+        high = arr_len - 1
+        while mid <= high:
+            if nums[mid] == 0:
+                nums[low], nums[mid] = nums[mid], nums[low]
+                low += 1
+                mid += 1
+            
+            elif nums[mid] == 1:
+                mid += 1
+            
+            else: 
+                nums[high], nums[mid] = nums[mid], nums[high]
+                high -= 1
