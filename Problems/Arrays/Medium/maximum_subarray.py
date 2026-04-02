@@ -25,3 +25,29 @@ class Solution:
                     max_sum = subarray_sum
                 j+=1
         return max_sum
+    
+    def optimized_solution(self, nums: List[int]) -> int:
+        """
+        Intuition: This is what's called Kadane's algorithm. So, in the brute force, we were going through the same element thrice imo. But we needed to reduce it to just once. And for that we can consider a set of questions we can ask an element once we reach it : 
+        1. Should we add this element to our sub-array ? 
+        2. Should we throw our sub-array away, consider the new sub-array starting from here ?
+        And to answer this, we can use the question of : 
+        -> What happens to my current subarray sum if I add this number to it. If it's positive still, then that's helpful to us. But if it's going negative, we might as well reset our sum to zero, and start again. 
+        
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        Reasoning: obvious
+        """
+        
+        max_sum = float('-inf')
+        current_sum = 0
+        for value in nums:
+            current_sum += value 
+
+            if current_sum > max_sum:
+                max_sum = current_sum 
+            
+            if current_sum < 0:
+                current_sum = 0
+        
+        return max_sum
