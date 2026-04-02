@@ -51,3 +51,29 @@ class Solution:
                 current_sum = 0
         
         return max_sum
+    
+    def recursive_follow_up_partial_solution(self, nums: List[int]) -> int:
+        """
+        Intuition: This is not the complete solution. Here we're recursively splitting the array into to halves. And returning once we split them into single element array. 
+        On top of that we're also calculating the sum of these split arrays as well. Now, in the end we return the maximum of these 4. Now, this is not complete and this is not at all optimal, why it's not complete is because this is not considering the case where there can be a sub-array that's spread across the center. That's not being considered here. 
+
+        Time Complexity: O(nlogn)
+        Space Complexity: O(n)
+        Reasoning : 
+        TC O(nlogn) because total TC = (work per level) * (number of levels) = O(n) * logn. This is because at each level of the tree we're still doing a total of O(n) work, if you visualize the stack , the work being calculating the sum of each of the half. 
+        SC O(n), ideally it should've been the height of the stack - O(logn), but here we are slicing the array. In python, when you slice an array, it creates new copies of them. So in the first step, when you slice - you get two new arrays of size n/2 and the old one of size n in the stack. This would be peak space = O(n/2) + O(n/2) + o(n) = o(2n) = O(n) 
+        
+        """
+        arr_len = len(nums)
+        def max_subarray_sum(self, low, high):
+            if low >= high:
+                return nums[low]
+            med = (low + high)//2
+            
+            left_best = max_subarray_sum(self, low, med)
+            right_best = max_subarray_sum(self, med+1, high)
+            left_sum = sum(nums[low:med+1])
+            right_sum = sum(nums[med + 1:high+1])
+            return max(left_sum, right_sum, left_best, right_best)
+
+        return max_subarray_sum(self, 0, arr_len-1)
