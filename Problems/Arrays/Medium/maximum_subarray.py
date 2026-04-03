@@ -77,3 +77,47 @@ class Solution:
             return max(left_sum, right_sum, left_best, right_best)
 
         return max_subarray_sum(self, 0, arr_len-1)
+    
+    def recursive_followup_solution(self, nums: List[int]) -> int:
+        """
+        Intuition: Everything explained above + solving the center walk. Also the interesting thing is you only need to solve the center walk because since this is recursive, even if the max sum subarray is in entirely one of the left / right halves, we'll still have that particular array to split, we'll walk from center to left and right for it and find the sum of both the sums. That'd practically be that entire subarray being the answer as well. 
+        Also, we'll handle the case where the answer is a single element as well. 
+
+        Time Complexity: O(nlogn)
+        Space Complexity: O(logn)
+        Reasoning : Reason for SC is the above only. We're not splitting anymore, so the SC is the theoretical value of the height of the recursive stack
+        """
+        arr_len = len(nums)
+        def solve_for_cross(low, med, high):
+            #Here, we start from med, we go left end , calculate the sum , go right end, calculate the sum and return the sum of them back.
+            #left half 
+            max_sum = float('-inf')
+            curr_sum = 0
+            for i in range(med, low-1, -1):
+                curr_sum += nums[i]
+                if curr_sum > max_sum:
+                    max_sum = curr_sum
+            left_sum = max_sum
+
+            max_sum = float('-inf')
+            curr_sum = 0
+            for i in range(med+1, high+1):
+                curr_sum += nums[i]
+                if curr_sum > max_sum:
+                    max_sum = curr_sum
+            right_sum = max_sum
+
+            return left_sum + right_sum
+
+        def solve(low, high):
+            if low >= high:
+                return nums[low]
+            
+            med = (low+high)//2
+            left_max = solve(low, med)
+            right_max = solve(med+1, high)
+            cross_max = solve_for_cross(low, med, high)
+
+            return max(left_max, right_max, cross_max)
+        
+        return solve(0, arr_len - 1)
