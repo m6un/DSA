@@ -30,17 +30,18 @@ class Solution:
                     return False
             return True
         
-        if arr_len <= 2 or is_descending(nums):
+        if is_descending(nums):
             bubble_sort(0)
             return nums
         
-        k = arr_len - 3
-        while k >= 0:
+        k = arr_len - 2
+        while k >= -1:
             # I think the bigger question here is how do you know to decrement k ? as in how do you know that there is no lexicographically greater arrangement to the right of k ? I mean if it's sorted descending, then we know that there is no more way right.
-            i = k + 1
-            if is_descending(nums[i:]):
+            if is_descending(nums[k:]):
                 k -= 1
                 continue
-            bubble_sort(i)
-            nums[i], nums[i+1] = nums[i+1], nums[i]
-            return nums
+            for i in range(arr_len-1, k, -1):
+                if nums[i] > nums[k]:
+                    nums[k], nums[i] = nums[i], nums[k]
+                    bubble_sort(k+1)
+                    return nums
