@@ -6,42 +6,35 @@ Link: https://leetcode.com/problems/next-permutation/
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
         """
-        Do not return anything, modify nums in-place instead.
-        """
-        """
+        Intuition:
             We're not supposed to return anything. This is an O(1) operation. 
-            Lexicographic order means the dictionary order of things. 
-        """
-        arr_len = len(nums)
+            Lexicographic order means the dictionary order of things. The intuition here is to first understand that mostly we'll be dealing with parts of arrays that are sorted descending. This is because that's the highest value a particular permutation can have, as mentioned in the question description. 
 
-        def bubble_sort(start_index):
-            i = arr_len - 1
-            while i > 0:
-                j = start_index
-                while j < arr_len - 1:
-                    if nums[j] > nums[j+1]:
-                        nums[j], nums[j+1] = nums[j+1], nums[j]
-                    j += 1
-                i -= 1
+            Intuition is to identify the first decreasing pair from the right ( i < i+1 ), keep the i as pivot, swap with the smallest value that's larger than pivot value, and then reverse nums[pivot+1:], because if you see the code, the part to the right of pivot will already be decreasingly sorted.
+        Time Complexity: O(N)
+        Space Complexity: O(1)
+        Reasoning : SC is obvious. for TC, we're doing three disjointed loops here, but all of them add up to O(3n) which essentially is o(n) 
+        """
+        n = len(nums)
+        pivot = -1
+
+        # Now we check if there are any pairs from the right where nums[i] < nums[i+1]
+        for i in range(n-2, -1, -1):
+            if nums[i] < nums[i+1]:
+                pivot = i 
+                break
         
-        def is_descending(arr):
-            for j in range(len(arr) - 1):
-                if arr[j+1] > arr[j]:
-                    return False
-            return True
+        # If pivot != -1 , we'll find the smallest value that's larger than pivot and swap them.  
+        if pivot != -1:
+            for i in range(n-1, pivot, -1):
+                if nums[i] > nums[pivot]:
+                    nums[i], nums[pivot] = nums[pivot], nums[i]
+                    break
         
-        if is_descending(nums):
-            bubble_sort(0)
-            return nums
+        left, right = pivot+1, n-1 
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
         
-        k = arr_len - 2
-        while k >= -1:
-            # I think the bigger question here is how do you know to decrement k ? as in how do you know that there is no lexicographically greater arrangement to the right of k ? I mean if it's sorted descending, then we know that there is no more way right.
-            if is_descending(nums[k:]):
-                k -= 1
-                continue
-            for i in range(arr_len-1, k, -1):
-                if nums[i] > nums[k]:
-                    nums[k], nums[i] = nums[i], nums[k]
-                    bubble_sort(k+1)
-                    return nums
+        return nums
