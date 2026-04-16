@@ -37,27 +37,43 @@ class Solution:
         bottom_row_index = len(matrix) - 1
         cycle_starting_column_index = 0
         result = []
-        while j <= right_most_column_index:
-            result.append(matrix[i][j])
-            j+= 1
+        while True:
+            while j <= right_most_column_index:
+                result.append(matrix[i][j])
+                j+= 1
 
-        i+= 1
-        j-= 1
-        while i <= bottom_row_index:
-            result.append(matrix[i][j])
             i+= 1
-        
-        j -= 1 
-        i-= 1
-        while j >= left_most_column_index:
-            result.append(matrix[i][j])
-            j -= 1
-        
-        i-= 1 
-        j+= 1
-        while i >= cycle_starting_column_index:
-            print(f"{i},{j}")
-            result.append(matrix[i][j])
-            i -= 1
-        i += 1
-        return result
+            j-= 1
+            right_most_column_index -= 1
+            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+                return result
+            while i <= bottom_row_index:
+                result.append(matrix[i][j])
+                i+= 1
+            
+            j -= 1 
+            i-= 1
+            bottom_row_index -= 1
+            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+                return result
+
+            while j >= left_most_column_index:
+                result.append(matrix[i][j])
+                j -= 1
+            i-= 1 
+            j+= 1
+            left_most_column_index += 1
+            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+                return result
+
+            while i > top_row_index:
+                result.append(matrix[i][j])
+                i -= 1
+            i+=1
+            j+=1
+            top_row_index += 1
+            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+                return result
+    """
+    Hmm, I think one thing we can do is to keep changing the boundaries once one cycle completes hmmm. 
+    """
