@@ -6,74 +6,43 @@ Link: https://leetcode.com/problems/spiral-matrix/
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         """
-        Intuition: 
+        Intuition: Okay so the intuition here's basically to keep the gates , top left bottom and right and then progressively keep reducing them and after every step checking if the gates have been breached. One key learning here for me is while loop + manually making changes to the pointer, then better to use a for loop for that. 
+        The intuition is to follow a simulation : We go boundary by boundary and move inwards. That's the essential operation. First row, last column, last row, first column and then we move inwards by 1 and repeat
 
-        Time Complexity: O()
-        Space Complexity: O()
-        Reasoning : 
+        Time Complexity: O(M x N)
+        Space Complexity: O(1)
+        Reasoning : TC obvious. For SC , we're returning a result array of length M*N, but in many contexts, we don't count the result array towards counting the SC.
         """
-        """
-        Hmm, from the hints, they're saying that for some problems we need to write
-        algorithm for the simulation. And the simulation here, 
-        We go boundary by boundary and move inwards. That's the essential operation. 
-        First row, last column, last row, first column and then we move inwards by 1 and
-        repeat -- This is the simulation that we need interesting. Even I got here, but my 
-        question was more around how we'll figure out okay now I should stop here and move
-        inwards hmmmm. But now that I've heard it explicitly, I've got the idea it seems. 
-        """
-        '''
-        one question is how do you know when to stop as in, we should know that we can't
-        go into a place where we've passed once. I mean if we keep updating the i below, and 
-        if the next step of the new cycle by any chance ( this goes after the intial step)
-        tries to get into the line of the i then we stop. I know this doesn't make sense rn,
-        but lemme code this out ( both the end columns )
-        '''
-        #let i be where we start one cycle before we go inward. 
+    
         i = 0 
         j = 0
-        left_most_column_index = 0
-        right_most_column_index = len(matrix[0]) - 1
-        top_row_index = 0
-        bottom_row_index = len(matrix) - 1
-        cycle_starting_column_index = 0
+        left = 0
+        right = len(matrix[0]) - 1
+        top = 0
+        bottom = len(matrix) - 1
         result = []
         while True:
-            while j <= right_most_column_index:
-                result.append(matrix[i][j])
-                j+= 1
-
-            i+= 1
-            j-= 1
-            right_most_column_index -= 1
-            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
-                return result
-            while i <= bottom_row_index:
-                result.append(matrix[i][j])
-                i+= 1
             
-            j -= 1 
-            i-= 1
-            bottom_row_index -= 1
-            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+            for j in range(left, right+1):
+                result.append(matrix[i][j])
+            top += 1
+            if left > right or top > bottom :
                 return result
 
-            while j >= left_most_column_index:
+            for i in range(top, bottom+1):
                 result.append(matrix[i][j])
-                j -= 1
-            i-= 1 
-            j+= 1
-            left_most_column_index += 1
-            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+            right -= 1
+            if left > right or top > bottom :
                 return result
 
-            while i > top_row_index:
+            for j in range(right, left-1, -1):
                 result.append(matrix[i][j])
-                i -= 1
-            i+=1
-            j+=1
-            top_row_index += 1
-            if left_most_column_index >    right_most_column_index or top_row_index > bottom_row_index :
+            bottom -= 1
+            if left > right or top > bottom :
                 return result
-    """
-    Hmm, I think one thing we can do is to keep changing the boundaries once one cycle completes hmmm. 
-    """
+
+            for i in range(bottom, top - 1, -1):
+                result.append(matrix[i][j])
+            left += 1
+            if left > right or top > bottom :
+                return result
