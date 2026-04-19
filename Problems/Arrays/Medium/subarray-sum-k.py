@@ -13,15 +13,21 @@ class Solution:
         Reasoning : 
         """
         i = 0 
+        j = 1
         count = 0 
-        current_sum = 0 
+        current_sum = 0
         arr_len = len(nums)
-        for j in range(arr_len):
-            if nums[j] + current_sum > k:
-                current_sum = 0
-                i = j
-            
-            elif nums[j] + current_sum == k:
+        if nums[i] == k:
+            count+= 1
+        while j < arr_len:
+            current_sum = sum(nums[i:j+1])
+            print(f"{i}{j}{count}{current_sum}")
+            if current_sum == k:
+                i = j 
                 count += 1
-                current_sum = 0
-                i = j
+                j+= 1
+            elif current_sum < k:
+                j+= 1
+            else:
+                i+= 1
+        return count
