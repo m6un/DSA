@@ -32,6 +32,28 @@ class Solution:
                         else:
                             result.append([nums[i],nums[j],nums[k]])
         return result
+    
+    def threesum_hashmap_partial(self, nums: list[int]) -> list[list[int]]:
+        arr_len = len(nums)
+        result = set()
+        ref_map = {}
+        
+        # Populate the map with the FIRST occurrence of each number
+        for i in range(arr_len):
+            if nums[i] not in ref_map:
+                ref_map[nums[i]] = i
 
-        """
-        The a
+        for i in range(arr_len):
+            for j in range(i):
+                key = -(nums[i] + nums[j])
+                
+                # If the required 3rd number exists in our map...
+                if key in ref_map:
+                    # Make sure the 3rd number's index isn't the same as i or j
+                    if ref_map[key] != i and ref_map[key] != j:
+                        # Sort the triplet so permutations look identical, 
+                        # cast to tuple, and add to the set.
+                        result.add(tuple(sorted((nums[i], nums[j], key))))
+
+        # Convert the set of tuples back to a list of lists before returning
+        return [list(t) for t in result]
