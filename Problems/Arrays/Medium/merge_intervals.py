@@ -17,8 +17,8 @@ class Solution:
         ---> Order doesn't matter and modifying i/p would help solve it in lesser TC than bruteforce -> modify the input. 
 
         Time Complexity: O(nlogn)
-        Space Complexity: O(1)
-        Reasoning : nothing much to reason about. 
+        Space Complexity: O(n) 
+        Reasoning : SC - O(n) because of the sorting technique (Timsort in python native sort) - at worst case will have O(n) auxiliary SC. 
         """
         arr_len = len(intervals)
         result = []
