@@ -38,3 +38,10 @@ class Solution:
                     low = mid+1
                 else:
                     high = mid-1
+        
+        return False
+
+        """
+        The problem with having duplicates is that there could be situations with low == mid == high, and also then you would mistakenly consider one half being sorted, when it's not. 
+        So does it mean that we can't use binary search anymore since there could be no situation when one half is always sorted ? Idtso. There could be some trick that can be employed. 
+        """
