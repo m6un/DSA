@@ -44,3 +44,41 @@ class Solution:
             print(left_half, right_half, low, high)
         
         return -1
+    
+    def singleNonDuplicate(self, nums: List[int]) -> int:
+        """
+        Intuition: This is a very mathematical one. The pairs that occur before the non-pair single element, will always have their first elements' index to be an even number. But after the single element, it disrupts the flow that all the pairs after, they start with odd index. We use this to discard left / right part of the pivot ( reduce search space , the core idea behind binary search ). 
+        We'll only check the immediate left / right values of the pivot and we also know the index of the pivot. rest you can pick up from the code. 
+        
+        Time Complexity: O(logn)
+        Space Complexity: O(1)
+        Reasoning : obv
+        """
+
+        low = 0 
+        high = len(nums) - 1
+
+        while low <= high:
+
+            pivot = (low + high ) // 2
+            print(pivot, pivot%2)
+
+            if pivot % 2 != 0:
+                if pivot-1 >= 0 and nums[pivot-1] == nums[pivot]:
+                    low = pivot+1
+                
+                elif pivot+1 < len(nums) and nums[pivot+1] == nums[pivot]:
+                    high = pivot-1
+                
+                else:
+                    return nums[pivot]
+            
+            else:
+                if pivot-1 >= 0 and nums[pivot-1] == nums[pivot]:
+                    high = pivot-1
+                
+                elif pivot+1 < len(nums) and nums[pivot+1] == nums[pivot]:
+                    low = pivot+1
+                
+                else:
+                    return nums[pivot]
