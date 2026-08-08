@@ -67,3 +67,50 @@ class Solution:
             return res 
         
         return -1
+    
+    def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
+
+        """
+        Intuition: 
+        - This is a combined question -> Binary search on answers + Greedy algorithm. I kinda messed up and overcomplicated on the greedy algorithm in the previous solution. But I did get close. This would also act as a greedy algorithm revision for me. 
+        - You can just do a simple pass and maintain a variable for calculating the streak.
+        - streak resets in two scenarios:
+            - When you encounter a flower that has not bloomed yet (breaking the adjacency).
+            - When your streak hits k (because you've successfully bundled them into a bouquet and need to start counting fresh for the next one).
+        - The reason why we call it greedy is because you're looking at the local maxima only. You're not grabbing the value and storing it for future use you deal with what you got at the moment and move on. That is how you're "Greedy"
+
+        Time Complexity: O(Nlog(max(bloomDay)))
+        Space Complexity: O(1)
+        Reasoning : For TC -> N - length of the bloomDay array and for binary search, the length of the og search space is max(bloomDay) since we considered search space to be [1,...,max(bloomDay)]
+        """
+    
+        low = 1 
+        high = max(bloomDay)
+
+        res = float('inf')
+
+        while low <= high:
+            mid = (low + high) // 2
+            bouquets = 0
+            streak = 0
+            for i in range(len(bloomDay)):
+                if bloomDay[i] <= mid:
+                    streak += 1
+                else:
+                    streak = 0
+                
+                if streak == k:
+                    bouquets += 1
+                    streak = 0
+            
+            if bouquets < m:
+                low = mid+1
+            else:
+                if mid < res:
+                    res = mid
+                high = mid-1
+
+        if res != float('inf'):
+            return res 
+        
+        return -1
