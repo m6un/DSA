@@ -6,37 +6,35 @@ Link: https://leetcode.com/problems/kth-missing-positive-number/description/
 class Solution:
     def findKthPositive(self, arr: List[int], k: int) -> int:
         """
-        Doesn't feel to me like an easy question tbh. How to translate this to binary search for answers ? 
-        - The major question here is how would you define the ceiling ? I mean I get it, how to define the ceiling. 
+        Intuition: This is very logical. 
+        - For an array that contains all the natural numbers, the value at any given index would be index+1
+        - Now for a given sorted array of random positive integers, the number of positive integers that's missing in the array at any given index is arr[index] - (index+1) -> where index+1 is the value of the natural number that should be there if there was no misses before. 
+        - This is pretty much what we're solving for in the algorithm. 
+        - To understand the last return statement , I urge you to go through the first example array in the question and just writing the above logic out on a piece of paper. 
+        - The condition for res === float('inf') is for cases when kth missing number comes before the first element of the array. Because in this case, the code never hits the else condition as arr[mid] - mid+1 will always be >= k. 
+
+        Time Complexity: O(logn)
+        Space Complexity: O(1)
+        Reasoning : obv
         """
 
-        count = 0
-        for i in range(1,max(arr)+1):
-
-            low = 0
-            high = len(arr) -1
-
-            inner_res = self.inner_binary_loop(low, high, i, arr)
-
-            
-            if inner_res == -1:
-                count+=1
-                if count == k:
-                    return i
-        
-        return max(arr) + (k-count)
-        
-    def inner_binary_loop(self, low, high, i, arr):
+        low = 0
+        high = len(arr) -1
+        res = float('-inf')
 
         while low <= high:
+            
+            mid= (low + high) // 2
 
-            mid = (low + high) // 2
-
-            if arr[mid] > i:
+            if arr[mid] - (mid+1) >= k:
                 high = mid-1
-            elif arr[mid] < i:
-                low = mid+1
             else:
-                return arr[mid]
+                if mid > res:
+                    res = mid
+                low = mid+1
         
-        return -1
+        if res == float('-inf'):
+            return k
+        
+        
+        return arr[res] + (k - (arr[res] - (res+1)))
