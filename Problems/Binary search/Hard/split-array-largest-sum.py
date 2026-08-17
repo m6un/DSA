@@ -1,54 +1,61 @@
+"""
+Problem: Split array largest sum
+Difficulty: Hard
+Link: https://leetcode.com/problems/split-array-largest-sum/description/
+"""
+
 class Solution:
     def splitArray(self, nums: List[int], k: int) -> int:
         """
-        Let's go , LC Hard. 
-        - You've got the list nums
-        - You've got the value k, you need to split nums into k non-empty subarray such that the largest sum of any subarray is minimized. 
-        - I'm confused and tired, but we need to do this. 
-        - Hmm...... 
-        - How to conver this to a binary search for answers solution.... 
-        - I mean I don't have to think about this as splitting into subarrays, but I can think of it as similar to grouping into adjacent groups right. 
-        - I got some ideas from hermu yesterday, he said we'll have to think about solving this in nlogm time. so : 
-        - low = min(nums)
-        - high = sum(nums)
-        - then for any value we'll have to greedily find out if we can form one adjacent group with that sum or something. 
+        Intuition: 
+        
+        - This is an LC Hard and rightly so. 
+        - The idea here is to : 
+            - Set the search space - max(array) -- sum(array) - a subarray sum's min to max values. 
+            - Now, once the groups are calculated, we check -> are the groups > k, that means the mid value that we have splits the array into more than k groups, which means the mid is small that it splits too much, we need mid to be high so low = mid+1
+            - Else, which means that our mid managed to split the array into groups < k. Now this is an acceptable value, but we can do better - because we're looking for the minimum sum. 
+            - A very interesting thing, that I'm yet to wrap my head around fully here is that the mid value which you find where your groups <= k and your mid is the lowest possible , is interestingly where your groups will be exactly equal to k. Now this is an implicit relationship , for which we're explicitly checking for. Check the code, the else loop is for groups <= k. That's what's been wrecking my head for sometime hmmm.... 
+            - Got some more idea on the thing that's confusing me: 
+                - The exact breaking point is guaranteed to be a real sum because for the array to be further split , only if we squeeze below the sum of the biggest subarray, you're guaranteed that there'll be a split. 
+                - And we're always considering mid value to be the hypothetical maximum limit that no subarray should exceed. 
+                    - During the binary search, mid is often just a loose upper bound. The actual largest sum of your groups might be lower than mid.
+                    - It is only at the exact breaking point (the very end of the search) that this hypothetical limit is squeezed so tightly that mid perfectly equals the actual largest subarray sum.
+
+        Time Complexity: O(NlogD), where D = sum(nums) - max(nums)
+        Space Complexity: O(1)
+        Reasoning : obv
         """
-
-        low = min(nums)
+        low = max(nums)
         high = sum(nums)
-
-        res = float('inf')
 
         while low <= high:
 
             mid = (low + high) // 2 #our sum
 
             temp_sum = 0 
-            groups = 0 
+            groups = 1
             for i in range(len(nums)):
 
                 temp_sum += nums[i]
 
                 if temp_sum > mid:
                     temp_sum = nums[i]
-                    groups += 1 # I'm not sure about this.
-                elif temp_sum == mid:
-                    # THis is tricky place. 
-                    temp_sum = 0
                     groups += 1
-                    """
-                    What are my problems here ? 
-                    - Major problems are:
-                        - I don't know where to slot the check for k. In here, even if it matches, we need to know if including this group, we can form k groups. 
-                        - I need to have some logic that I can use to modify low and high after each of these for loop ends. From walking through, I've understood that we may have to store the highest sum calculated here and if that's > mid we'll have to go high = mid-1 or low = mid+1. 
-                    """
 
-
-
-
-
-
-
-
+            if groups > k:
+                low = mid+1
+            else:
+                high = mid-1
         
+        return low
+            
+
+
+
+
+
+
+
+
+
         
